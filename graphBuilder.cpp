@@ -1,21 +1,22 @@
 #include "graphBuilder.h"
 
 int graphBuilder::match(int i, int j){ // ( 0 index, 1 index thus - 1 )
-    return ( sequence[i] == label[j-1] ? 0 : SUB);
+    return ( sequence[i] == label[j-1] ? MATCH.first : MATCH.second);
 }
 
 int graphBuilder::newI(int layer, int index){
     return index + layer * (n + 1);
 }
 
-graphBuilder::graphBuilder(string&s, string&l, graphBuilder::vpi&e, tii c, int _n){
-    n = _n; 
+graphBuilder::graphBuilder(string&s, string&l, graphBuilder::vpi&e, tii c){
+    n = l.size(); 
     m = s.size();
     sequence = s; 
     label = l;
+
     DEL = get<0>(c);
     INS = get<1>(c);
-    SUB = get<2>(c);
+    MATCH = make_pair(get<2>(c) , get<3>(c));
     size = m * ( n + 1 ) + 2;
     adj = vvi(n+1); 
     for(auto [a,b] : e) adj[a].push_back(b);

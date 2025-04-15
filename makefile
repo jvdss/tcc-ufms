@@ -4,7 +4,7 @@ CXXFLAGS := -fsanitize=address,undefined -fno-omit-frame-pointer -g -Wall -Wshad
 
 # Files
 TARGET := main
-SRCS := main.cpp graphBuilder.cpp functions.h
+SRCS := main.cpp graphBuilder.cpp
 OBJS := $(SRCS:.cpp=.o)
 
 # Default target
