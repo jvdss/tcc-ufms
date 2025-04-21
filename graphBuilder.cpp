@@ -31,34 +31,32 @@ tuple<int, int, graphBuilder::vvp> graphBuilder::build(){ // m * ( |V| + |E| )
     for(int v = 1; v <= n; ++v) graph[s].emplace_back( v, match(0, v) );
 
     for(int i = 0; i < m; ++i){ // layers
-
-        if( i < m-1) /* delete edge from dummy to dummy */
-            graph[newI(i, 0)].emplace_back(newI(i+1, 0), DEL);
-
-        for(int u = 1; u <= n; ++u){
-            
-            /* match edge from dummy to all (i+1,u) */
+        for(int u = 1; u <= n; ++u){            
             if( i < m-1 )
                 graph[newI(i, 0)].emplace_back( newI(i+1, u), match(i+1, u));
-
-            if( i < m-1 ) 
-                graph[newI(i, u)].emplace_back(newI(i+1, u), DEL);
-                /* delete edge from vertex (i,u) to (i+1,u) */
-
+                /* match edge from dummy to all (i+1,u) */
             
-            for( auto v : adj[u]){
-                /* insert edge from u to v such that */
-                /* u.layer == v.layer and y in adj[u] */
-                graph[newI(i, u)].emplace_back(newI(i, v), INS); 
-
+            for(auto v : adj[u]){
                 if( i < m-1 ) 
                     graph[newI(i, u)].emplace_back(newI(i+1, v), match(i+1, v) );
                     /* match edge from u to v such that */
                     /* u.layer == v.layer + 1 and y in adj[u] */
+                
+                graph[newI(i, u)].emplace_back(newI(i, v), INS); 
+                /* insert edge from u to v such that */
+                /* u.layer == v.layer and y in adj[u] */
             }
-        }
-    }
 
+            if( i < m-1 ) 
+                graph[newI(i, u)].emplace_back(newI(i+1, u), DEL);
+                /* delete edge from vertex (i,u) to (i+1,u) */
+        }
+
+        if( i < m-1)
+            graph[newI(i, 0)].emplace_back(newI(i+1, 0), DEL);
+            /* delete edge from dummy to dummy */
+    }
+    
     // set up sink edges
     for(int u = 0; u <= n; ++u) graph[newI(m-1, u)].emplace_back(t, 0);
 

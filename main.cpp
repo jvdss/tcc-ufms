@@ -17,17 +17,16 @@ void solve(){
     string seq; cin >> seq;
                         
     auto costs = make_tuple( 
-        2, // Delete 
-        2, // Insert
-        1, // Match
-        2  // Doesn't Match
+        1, // Delete 
+        1, // Insert
+        0, // Match
+        1  // Doesn't Match
     );
 
     auto [s, t, graph] = graphBuilder(seq, lab, edges, costs).build();
     
-    // cout << dijkstra(s, t, graph) << endl;
-    // cout << bfs01(s, t, graph) << endl;
-    cout << dials(s, t, graph) << endl;
+    cout << dijkstra(s, t, graph) << endl;
+    cout << bfs01(s, t, graph) << endl;
 }
 
 int32_t main(){ ios::sync_with_stdio(false); cin.tie(0); solve(); return 0; }
