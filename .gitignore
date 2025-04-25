@@ -1,3 +1,7 @@
 .vscode/
 *.o
 main
+.gitignore
+joaographGFA.gfa
+joaographSEQ.fastq
+gen

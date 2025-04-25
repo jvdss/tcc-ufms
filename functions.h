@@ -2,7 +2,7 @@
 using namespace std;
 using vpi = vector<pair<int,int>>;
 using vvp = vector<vpi>;
-const int MAX = 1e6;
+const int MAX = 1e7;
 int d[MAX], vis[MAX];
 
 int dijkstra(int s, int t, vvp& g) {
