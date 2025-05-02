@@ -1,4 +1,64 @@
 #include "functions.h"
+int d[MAX], parent[MAX];
+
+vector<int> recoverPath(int s, int t, int n){
+    vector<int> path;
+    while(t != s){
+        t = parent[t];
+        if( t != s) path.push_back(t);
+    }
+    reverse(path.begin(), path.end());
+    // for(auto&p : path) p %= (n+1);
+    return path;
+}
+
+int dijkstra(int s, int t, vvp& g) {
+    int n = g.size();
+	for (int i = 0; i < n; i++) d[i] = MAX;
+	
+    d[s] = 0;
+	priority_queue<pair<int, int>> pq;
+	pq.emplace(0, s);
+ 
+	while (pq.size()) {
+		auto [ndist, u] = pq.top(); pq.pop();
+		if (-ndist > d[u]) continue;
+ 
+		for (auto [idx, w] : g[u]) if (d[idx] > d[u] + w) {
+			d[idx] = d[u] + w;
+            parent[idx] = u;
+			pq.emplace(-d[idx], idx);
+		}
+	}
+    return d[t];
+}
+
+int bfs01(int s, int t, vvp& g){ 
+    /* Only works if weights are in range [0, 1] */
+    int n = g.size();
+	for (int i = 0; i < n; i++) d[i] = MAX;
+	
+    d[s] = 0;
+	deque<int> dq;
+	dq.push_front(s);
+
+	while (dq.size()) {
+		auto u = dq.front(); dq.pop_front();
+ 
+		for (auto [v, w] : g[u]) 
+            if (d[v] > d[u] + w) {
+			    d[v] = d[u] + w;
+                parent[v] = u;
+			    if(w)
+                    dq.push_back(v);
+                else
+                    dq.push_front(v);
+		    }
+	}
+
+    return d[t];
+}
+
 
 pair<vpi, string> parseGraph(string graphPath){
 	vpi edges;
@@ -44,51 +104,4 @@ string parseSequence(string sequencePath){
         break;
     } sequenceFile.close();
 	return sequence;
-}
-
-int dijkstra(int s, int t, vvp& g) {
-    int n = g.size();
-	vector<int> d(n);
-	for (int i = 0; i < n; i++) d[i] = MAX;
-	
-    d[s] = 0;
-	priority_queue<pair<int, int>> pq;
-	pq.emplace(0, s);
- 
-	while (pq.size()) {
-		auto [ndist, u] = pq.top(); pq.pop();
-		if (-ndist > d[u]) continue;
- 
-		for (auto [idx, w] : g[u]) if (d[idx] > d[u] + w) {
-			d[idx] = d[u] + w;
-			pq.emplace(-d[idx], idx);
-		}
-	}
-    return d[t];
-}
-
-int bfs01(int s, int t, vvp& g){ 
-    /* Only works if weights are in range [0, 1] */
-    int n = g.size();
-	vector<int> d(n);
-	for (int i = 0; i < n; i++) d[i] = MAX;
-	
-    d[s] = 0;
-	deque<int> dq;
-	dq.push_front(s);
-
-	while (dq.size()) {
-		auto u = dq.front(); dq.pop_front();
- 
-		for (auto [v, w] : g[u]) 
-            if (d[v] > d[u] + w) {
-			    d[v] = d[u] + w;
-			    if(w)
-                    dq.push_back(v);
-                else
-                    dq.push_front(v);
-		    }
-	}
-
-    return d[t];
 }

@@ -4,15 +4,18 @@ using namespace std;
 using vpi = vector<pair<int,int>>;
 using vvp = vector<vpi>;
 const int MAX = 1e7+7;
-int d[MAX], parent[MAX];
+extern int d[MAX], parent[MAX];
 
-/* Parser */
-pair<vpi, string> parseGraph(string graphPath); // returns edges, labels
-string parseSequence(string sequencePath); // returns sequence
+/* Path Retrieval*/
+vector<int> recoverPath(int s, int t, int n);
 
 /* Distance */
 int dijkstra(int s, int t, vvp& g);
 int bfs01(int s, int t, vvp& g);
+
+/* Parser */
+pair<vpi, string> parseGraph(string graphPath); // returns edges, labels
+string parseSequence(string sequencePath); // returns sequence
 
 // int dials(int s, int t, vvp&g, int k = 2){ // O(|V|*K + |E|)
 // 	int n = g.size();

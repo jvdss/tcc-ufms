@@ -8,7 +8,7 @@ int graphBuilder::newI(int layer, int index){
     return index + layer * (n + 1);
 }
 
-graphBuilder::graphBuilder(string&s, string&l, graphBuilder::vpi&e, tii c){
+graphBuilder::graphBuilder(string&s, string&l, vpi&e, tii c){
     n = l.size(); 
     m = s.size();
     sequence = s; 
@@ -22,7 +22,7 @@ graphBuilder::graphBuilder(string&s, string&l, graphBuilder::vpi&e, tii c){
     for(auto [a,b] : e) adj[a].push_back(b);
 }
 
-tuple<int, int, graphBuilder::vvp> graphBuilder::build(){ // m * ( |V| + |E| )
+tuple<int, int, vvp> graphBuilder::build(){ // m * ( |V| + |E| )
     vvp graph(size);
     int s = size - 2, t = size - 1;
 
