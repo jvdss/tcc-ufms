@@ -1,11 +1,12 @@
 #include <bits/stdc++.h>
+#pragma once
 using namespace std;
+using vpi = vector<pair<int,int>>;
+using vvp = vector<vpi>;
+using tii = tuple<int,int,int,int>;
+using vvi = vector<vector<int>>;
 
 class graphBuilder{
-    using vpi = vector<pair<int,int>>;
-    using vvp = vector<vpi>;
-    using tii = tuple<int,int,int,int>;
-    using vvi = vector<vector<int>>;
     int n, m, size; // num of vertices in graph, size of sequence, num of vertices in edition graph
     int DEL, INS;
     pair<int,int> MATCH;
@@ -14,7 +15,7 @@ class graphBuilder{
     int match(int i, int j);
     int newI(int i, int u);
 public:
-    graphBuilder(string&s, string&l, vector<pair<int,int>>&e, tii c);
+    graphBuilder(string&s, string&l, vpi&e, tii c);
     tuple<int, int, vvp> build(); // m * ( |V| + |E| )
 };
 
@@ -22,6 +23,12 @@ public:
 
 Final Graph
 Number of Vertices = m * (|V| + 1 ) + 2 ~=  m*|V|
-Number of Edges = TODO()
+Number of Edges = m(|V|+|E|) - |E|
+
+2 * ( |V| + 1 ) + ( m - 1) * |V| + m*|E| + (m-1)*|V| + (m-1)*|E|
+2 * ( |V| + 1 ) + m*|E| + (m-1) * (2*|V| + |E|)
+2|V| + 2 + m*|E| + (m)*(2|V| + |E|) - 2|V| - |E|
+2 + m*(2*|V| + 2*|E|) - |E|
+2 + 2m*(|V| + |E|) - |E| 
 
 */

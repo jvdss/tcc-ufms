@@ -60,5 +60,9 @@ tuple<int, int, graphBuilder::vvp> graphBuilder::build(){ // m * ( |V| + |E| )
     // set up sink edges
     for(int u = 0; u <= n; ++u) graph[newI(m-1, u)].emplace_back(t, 0);
 
+    long long numEdges = 0;
+    for(int i = 0; i < size; ++i) numEdges += graph[i].size();
+    cout << "numVertices: " << size << " numEdges: " << numEdges << endl;
+    cout << "The graph was built!\n";
     return make_tuple(s, t, graph);
 }
