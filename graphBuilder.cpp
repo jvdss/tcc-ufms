@@ -22,43 +22,43 @@ graphBuilder::graphBuilder(string&s, string&l, vpi&e, tii c){
     for(auto [a,b] : e) adj[a].push_back(b);
 }
 
-tuple<int, int, vvp> graphBuilder::build(){ // m * ( |V| + |E| )
-    vvp graph(size);
+tuple<int, int, vector<vector<tuple<int,int,int>>>> graphBuilder::build(){ // m * ( |V| + |E| )
+    vector<vector<tuple<int,int,int>>> graph(size, vector<tuple<int,int,int>>());
     int s = size - 2, t = size - 1;
 
     /* edges from source */
-    graph[s].emplace_back(0, DEL);
-    for(int v = 1; v <= n; ++v) graph[s].emplace_back( v, match(0, v) );
+    graph[s].emplace_back(0, DEL, 0);
+    for(int v = 1; v <= n; ++v) graph[s].emplace_back( v, match(0, v), 1);
 
     for(int i = 0; i < m; ++i){ // layers
         for(int u = 1; u <= n; ++u){            
             if( i < m-1 )
-                graph[newI(i, 0)].emplace_back( newI(i+1, u), match(i+1, u));
+                graph[newI(i, 0)].emplace_back( newI(i+1, u), match(i+1, u), 1);
                 /* match edge from dummy to all (i+1,u) */
             
             for(auto v : adj[u]){
                 if( i < m-1 ) 
-                    graph[newI(i, u)].emplace_back(newI(i+1, v), match(i+1, v) );
+                    graph[newI(i, u)].emplace_back(newI(i+1, v), match(i+1, v), 1);
                     /* match edge from u to v such that */
                     /* u.layer == v.layer + 1 and y in adj[u] */
                 
-                graph[newI(i, u)].emplace_back(newI(i, v), INS); 
+                graph[newI(i, u)].emplace_back(newI(i, v), INS, 2);
                 /* insert edge from u to v such that */
                 /* u.layer == v.layer and y in adj[u] */
             }
 
             if( i < m-1 ) 
-                graph[newI(i, u)].emplace_back(newI(i+1, u), DEL);
+                graph[newI(i, u)].emplace_back(newI(i+1, u), DEL, 0);
                 /* delete edge from vertex (i,u) to (i+1,u) */
         }
 
         if( i < m-1)
-            graph[newI(i, 0)].emplace_back(newI(i+1, 0), DEL);
+            graph[newI(i, 0)].emplace_back(newI(i+1, 0), DEL, 0);
             /* delete edge from dummy to dummy */
     }
     
     // set up sink edges
-    for(int u = 0; u <= n; ++u) graph[newI(m-1, u)].emplace_back(t, 0);
+    for(int u = 0; u <= n; ++u) graph[newI(m-1, u)].emplace_back(t, 0, 5);
 
     long long numEdges = 0;
     for(int i = 0; i < size; ++i) numEdges += graph[i].size();

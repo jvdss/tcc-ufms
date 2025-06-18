@@ -1,18 +1,20 @@
 #include "functions.h"
-int d[MAX], parent[MAX];
+int d[MAX];
+pair<int,int> parent[MAX];
 
 vector<int> recoverPath(int s, int t, int n){
     vector<int> path;
     while(t != s){
-        t = parent[t];
-        if( t != s) path.push_back(t);
+        auto [par, edge_type] = parent[t];
+        t = par;
+        if( t != s and edge_type != 0) path.push_back(t);
     }
     reverse(path.begin(), path.end());
     // for(auto&p : path) p %= (n+1);
     return path;
 }
 
-int dijkstra(int s, int t, vvp& g) {
+int dijkstra(int s, int t, vector<vector<tuple<int,int,int>>>& g) {
     int n = g.size();
 	for (int i = 0; i < n; i++) d[i] = MAX;
 	
@@ -24,16 +26,16 @@ int dijkstra(int s, int t, vvp& g) {
 		auto [ndist, u] = pq.top(); pq.pop();
 		if (-ndist > d[u]) continue;
  
-		for (auto [idx, w] : g[u]) if (d[idx] > d[u] + w) {
+		for (auto [idx, w, type] : g[u]) if (d[idx] > d[u] + w) {
 			d[idx] = d[u] + w;
-            parent[idx] = u;
+            parent[idx] = make_pair(u, type);
 			pq.emplace(-d[idx], idx);
 		}
 	}
     return d[t];
 }
 
-int bfs01(int s, int t, vvp& g){ 
+int bfs01(int s, int t, vector<vector<tuple<int,int,int>>>& g){ 
     /* Only works if weights are in range [0, 1] */
     int n = g.size();
 	for (int i = 0; i < n; i++) d[i] = MAX;
@@ -45,10 +47,10 @@ int bfs01(int s, int t, vvp& g){
 	while (dq.size()) {
 		auto u = dq.front(); dq.pop_front();
  
-		for (auto [v, w] : g[u]) 
+		for (auto [v, w, type] : g[u]) 
             if (d[v] > d[u] + w) {
 			    d[v] = d[u] + w;
-                parent[v] = u;
+                parent[v] = make_pair(u, type);
 			    if(w)
                     dq.push_back(v);
                 else

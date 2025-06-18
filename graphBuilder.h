@@ -16,7 +16,7 @@ class graphBuilder{
     int newI(int i, int u);
 public:
     graphBuilder(string&s, string&l, vpi&e, tii c);
-    tuple<int, int, vvp> build(); // m * ( |V| + |E| )
+    tuple<int, int, vector<vector<tuple<int,int,int>>>> build(); // m * ( |V| + |E| )
 };
 
 /*

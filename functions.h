@@ -4,14 +4,15 @@ using namespace std;
 using vpi = vector<pair<int,int>>;
 using vvp = vector<vpi>;
 const int MAX = 1e7+7;
-extern int d[MAX], parent[MAX];
+extern int d[MAX];
+extern pair<int,int> parent[MAX];
 
 /* Path Retrieval*/
 vector<int> recoverPath(int s, int t, int n);
 
 /* Distance */
-int dijkstra(int s, int t, vvp& g);
-int bfs01(int s, int t, vvp& g);
+int dijkstra(int s, int t, vector<vector<tuple<int,int,int>>>& g);
+int bfs01(int s, int t, vector<vector<tuple<int,int,int>>>& g);
 
 /* Parser */
 pair<vpi, string> parseGraph(string graphPath); // returns edges, labels
